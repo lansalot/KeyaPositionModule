@@ -1,0 +1,8 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^& \"C:\\\\Program Files\\\\Arduino CLI\\\\arduino-cli\\.exe\" compile --fqbn teensy:avr:teensy41 --warnings all --build-path \\.arduino-build \\.$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}
