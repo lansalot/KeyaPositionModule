@@ -479,8 +479,6 @@ void autosteerLoop()
       motorDrive();       // out to motors the pwm value
       pulseCount = 0;
     }
-    if (Brand == 3)
-      SetRelaysFendt();
   } // end of timed loop
 
   // This runs continuously, outside of the timed loop, keeps checking for new udpData, turn sense
@@ -888,50 +886,4 @@ void EncoderFunc()
     pulseCount++;
     encEnable = false;
   }
-}
-
-// Hitch Control------------------------------------------------------------
-void SetRelaysFendt(void)
-{
-  uint32_t currentMillis = millis();
-
-  if (currentMillis - lastpushbutton >= 300)
-  {
-    if (goDown)
-      liftGo();
-    if (endDown)
-      liftEnd();
-  }
-
-  // If Invert Relays is selected in hitch settings, Section 1 is used as trigger.
-  if (aogConfig.isRelayActiveHigh == 1)
-  {
-    bitState = (bitRead(relay, 0));
-  }
-  // If not selected hitch command is used on headland used as Trigger
-  else
-  {
-    if (hydLift == 1)
-    {
-      bitState = 1;
-    }
-    if (hydLift == 2)
-    {
-      bitState = 0;
-    }
-  }
-  if (aogConfig.enableToolLift == 1)
-  {
-    if (bitState && !bitStateOld)
-    {
-      pressGo();
-      lastpushbutton = currentMillis;
-    }
-    if (!bitState && bitStateOld)
-    {
-      pressEnd(); // Press End button - CAN Page
-      lastpushbutton = currentMillis;
-    }
-  }
-  bitStateOld = bitState;
 }

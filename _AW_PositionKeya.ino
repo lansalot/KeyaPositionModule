@@ -24,6 +24,10 @@ HardwareSerial *SerialGPS = &Serial3; // Main postion receiver (GGA)
 HardwareSerial *SerialImu = &Serial5; // TM171
 Stream *NmeaOutputSerial = &Serial2;  // NMEA out
 
+
+void JoystickBus_Receive(); // forward declaration
+void init_canbus1_filters(); // forward declaration
+
 const int32_t baudAOG = 115200;
 const int32_t baudGPS = 460800;
 
@@ -146,7 +150,7 @@ IPAddress Eth_ipDestination;
 #include "BNO08x_AOG.h"
 
 #include <FlexCAN_T4.h>
-FlexCAN_T4<CAN1, RX_SIZE_256, TX_SIZE_256> K_Bus;   // Tractor / Control Bus
+FlexCAN_T4<CAN1, RX_SIZE_256, TX_SIZE_256> canbus1;
 FlexCAN_T4<CAN2, RX_SIZE_256, TX_SIZE_256> ISO_Bus; // ISO Bus
 FlexCAN_T4<CAN3, RX_SIZE_256, TX_SIZE_256> Keya_Bus;
 
@@ -312,6 +316,7 @@ void setup()
 void loop()
 {
     KeyaBus_Receive();
+    JoystickBus_Receive();
     webConfigLoop();
 
     // Read incoming NMEA from GPS
